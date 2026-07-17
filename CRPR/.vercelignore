@@ -1,0 +1,7 @@
+media/
+staticfiles/
+static/
+db.sqlite3
+*.sqlite3
+.idea/
+.github/
