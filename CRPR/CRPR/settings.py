@@ -29,7 +29,7 @@ os.makedirs(os.path.join(BASE_DIR, 'static'), exist_ok=True)
 SECRET_KEY = 'django-insecure-gl0qtojb8pr2!d#pdkb8fw5-ziyo2qf=j6j^v6gj$mk#(qsq2i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = ['*','https://3d5c-41-204-187-5.ngrok-free.app/','http://repository.jhubafrica.com/','https://repository.jhubafrica.com/']
 
@@ -59,12 +59,12 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # GitHub OAuth Credentials
-SOCIAL_AUTH_GITHUB_KEY = "Ov23liZWtF68shpfKw2Q"
-SOCIAL_AUTH_GITHUB_SECRET = "e3b5059f07ac30108571fc5039074ccec3cf3012"
+SOCIAL_AUTH_GITHUB_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')  # Use environment variable for security
 
 # LinkedIn OAuth Credentials
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = "773ngljgmmf45w"  # Replace with LinkedIn Client ID
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = "WPL_AP1.xMo9LIW4aa58V0Zz.xmDHsQ=="  # Replace with LinkedIn Client Secret
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY')  # Replace with LinkedIn Client ID
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET')  # Replace with LinkedIn Client Secret
 
 
 # Redirect after login
@@ -149,12 +149,28 @@ WSGI_APPLICATION = 'CRPR.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+import urllib.parse
+
+if os.environ.get("DATABASE_URL"):
+    url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.path.lstrip("/"),
+            "USER": url.username,
+            "PASSWORD": url.password,
+            "HOST": url.hostname,
+            "PORT": url.port,
+            "OPTIONS": {"sslmode": "require"},
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
@@ -211,8 +227,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #paypal configuration
 PAYPAL_MODE = "live"
-PAYPAL_CLIENT_ID = "AZ_PnmU1xcBoYaa2eV1FVR1byE_XAO1_Xlo5pDnsu--8B-DEBeifAa_q6TDAAHBD4qAZbkhBssqpde2T"
-PAYPAL_CLIENT_SECRET = "EOM0kJn4E-BF2YHo-XZHGwUoITEFvXGD0zgr7T0laLPhKyc3E4LkQRlqnZLWAzTtM_oXWFSSyEmv0d1X"
+PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET')
 
 
 #Email setup codes for password reset
