@@ -33,4 +33,4 @@ build/
 *.db
 
 ```
-CRPR/db.sqlite3
+CRPR/db.sqlite3venv/
