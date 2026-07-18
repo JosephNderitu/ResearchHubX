@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gl0qtojb8pr2!d#pdkb8fw5-ziyo2qf=j6j^v6gj$mk#(qsq2i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['*','https://3d5c-41-204-187-5.ngrok-free.app/','http://repository.jhubafrica.com/','https://repository.jhubafrica.com/']
 
@@ -114,9 +114,8 @@ if not DEBUG:
         "staticfiles": {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
-        # Add a 'default' entry for your default file storage (e.g., for media files)
         "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage", # Or your custom default storage
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
         },
     }
 
@@ -265,6 +264,5 @@ AWS_DEFAULT_ACL = None
 AWS_S3_FILE_OVERWRITE = False
 AWS_QUERYSTRING_AUTH = False
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = os.environ.get('R2_PUBLIC_URL') + '/'
 
