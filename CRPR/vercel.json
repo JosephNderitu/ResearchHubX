@@ -1,8 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "functions": {
-    "CRPR/wsgi.py": {
-      "excludeFiles": "{staticfiles/**,static/**,media/**}"
-    }
-  }
-}
