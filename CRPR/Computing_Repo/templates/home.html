@@ -230,7 +230,9 @@
                                                 alt="{{ researcher.username }}" 
                                                 width="120" height="120" 
                                                 style="object-fit: cover; border: 4px solid #96df4d;">                                           
-                                                <h5 class="mt-3 mb-1 text-dark researcher-name">{{ researcher.username }}</h5>
+                                                <h5 class="mt-3 mb-1 text-dark researcher-name" title="{{ researcher.username }}">
+                                                    {{ researcher.username }}
+                                                </h5>
                                                 <p class="text researcher-text" style="color:rgb(36, 23, 110);">Projects: {{ researcher.project_count }}</p>
                                                 <br>
                                                 <!-- View Projects Button -->
@@ -245,27 +247,32 @@
                     </div>
                     
                     <!-- Inline CSS for Equal Card Widths -->
-                    <style>
+                   <style>
                         .researcher-card {
-                            width: 100%;  /* Ensures full width in column */
-                            min-height: 300px;  /* Adjust for uniform height */
+                            width: 100%;
+                            min-height: 300px;
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
                             align-items: center;
+                            overflow: hidden;
                         }
-                    
+
                         .researcher-name {
-                            font-size: 20px;
+                            font-size: 16px;
                             font-weight: bold;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            max-width: 100%;
+                            padding: 0 8px;
                         }
-                    
+
                         .researcher-text {
-                            flex-grow: 1;  /* Ensures text fills space equally */
-                            min-height: 40px;  /* Prevents height variation */
+                            flex-grow: 1;
+                            min-height: 40px;
                         }
-                    
-                        /* Ensuring images are uniform */
+
                         .researcher-card img {
                             object-fit: cover;
                             width: 120px;
